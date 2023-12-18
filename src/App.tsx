@@ -1,25 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Fragment, useState } from 'react';
+import Header from './components/UI/Header';
+import AviablePizzas from './components/Pizzas/AviablePizzas';
+import NewPizza from './components/Pizzas/NewPizza';
+import Modal from './components/UI/Modal';
+import Cart from './components/Cart/Cart';
+import { queryClient } from './utils/https';
+import { QueryClientProvider } from '@tanstack/react-query';
 
-function App() {
+const App:React.FC = (props) => {
+
+  const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
+
+  const closeModalHandler = () => {
+    setModalIsOpen(false);
+  }
+
+  const openModalHandler = () => {
+    setModalIsOpen(true);
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <QueryClientProvider client={queryClient}>
+    <Fragment>
+      <Header onClick={openModalHandler} />
+      <main>
+          {modalIsOpen && <Modal onClose={closeModalHandler}>
+          <Cart onClose={closeModalHandler}/>
+          </Modal>}
+          <NewPizza />
+          <AviablePizzas />
+      </main>
+    </Fragment>
+    </QueryClientProvider>
   );
 }
 

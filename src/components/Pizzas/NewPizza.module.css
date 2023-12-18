@@ -1,0 +1,52 @@
+.adminPanelContainer {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.adminPanel {
+    width: 25%;
+    height: 20rem;
+    border-radius: 15px;
+    background-color: rgb(255,165,0,0.5);
+    text-align: center;
+}
+
+.addPizzaForm {
+    display:flex;
+    flex-direction: column;
+    gap: 5px;
+    align-items: center;
+}
+
+.addPizzaForm input {
+    border-radius: 15px;
+    height: 20px;
+    text-align: center;
+    border: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    font-weight: 500;
+    font-size: 15px;
+}
+
+.addPizzaForm label {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.addPizzaForm button {
+    margin-top: 1rem;
+    width: 10rem;
+    height: 2rem;
+    border-radius: 15px;
+    background-color: gold;
+    font-weight: bold;
+    border: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.addPizzaForm button:hover {
+    opacity: 0.7;
+    cursor: pointer;
+}
