@@ -1,5 +1,4 @@
 import React, { Fragment } from "react";
-import classes from './Header.module.css'
 import PizzaLogo from '../../assets/pizza-svgrepo-com.svg'
 import Cart from '../../assets/basket-fill.svg'
 import { useQuery } from "@tanstack/react-query";
@@ -34,7 +33,7 @@ const CartActionsSection = styled.div`
     justify-content: space-between;
 `;
 
-const CartButton = styled.button`
+const CartButton = styled.button<{disabled:boolean}>`
     display: flex;
     width: 10rem;
     justify-content: center;
@@ -69,14 +68,12 @@ const CartButtonP = styled.p`
 
 const Header:React.FC<{onOpenModal: (event:React.MouseEvent) => void}> = (props) => {
 
-    const {data, isPending, isError, error} = useQuery<CartItemInterface[]>({
+    const {data, isSuccess, isError, error} = useQuery<CartItemInterface[]>({
         queryKey:['cart'],
         queryFn:fetchCart,
     });
 
-    const totalQuantity = data?.reduce((sum:number,item:CartItemInterface) => sum + item.quantity, 0) || 0;
-
-    
+    const totalQuantity = data?.reduce((sum:number,item:CartItemInterface) => sum + item.quantity, 0) || 0; 
 
     return (
         <Fragment>
@@ -86,7 +83,7 @@ const Header:React.FC<{onOpenModal: (event:React.MouseEvent) => void}> = (props)
                 <LogoP>FastPizza</LogoP>
             </LogoContainer>
             <CartActionsSection>
-                <CartButton onClick={props.onOpenModal}>
+                <CartButton disabled={!isSuccess} onClick={props.onOpenModal}>
                     <CartButtonImg src={Cart} alt='Cart'/>
                     <CartButtonP>{totalQuantity}</CartButtonP>
                 </CartButton>

@@ -3,6 +3,7 @@ import PizzaItem from "./PizzaItem";
 import { useQuery } from "@tanstack/react-query";
 import { Pizza, fetchPizzas } from "../../utils/https";
 import { styled } from "styled-components";
+import Loader from "../UI/Loader";
 
 const AviablePizzasContainer = styled.div`
   display: flex;
@@ -37,6 +38,10 @@ const AviablePizzas:React.FC = () => {
         content = data.map((pizza:Pizza) => 
         <PizzaItem key={pizza.id} id={pizza.id} description={pizza.description} price={pizza.price} name={pizza.name}/>
         )
+    }
+
+    if(isPending) {
+      content = <Loader/>
     }
 
     return (

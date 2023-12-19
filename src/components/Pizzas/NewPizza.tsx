@@ -3,6 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 import { NewPizzaObj, addPizza, queryClient } from "../../utils/https";
 import {useForm, SubmitHandler} from 'react-hook-form'
 import { styled } from 'styled-components';
+import Loader from "../UI/Loader";
 
 const AdminPanelContainer = styled.div`
   display: flex;
@@ -85,6 +86,22 @@ const NewPizza: React.FC = () => {
       },
     };
     mutate(pizzaData);
+  };
+
+  let content:React.ReactNode = (
+    <AddPizzaForm onSubmit={handleSubmit(onSubmit)}>
+      <Label htmlFor="name">Nazwa</Label>
+      <Input {...register("name")} id="name" autoComplete="off" />
+      <Label htmlFor="description">Opis</Label>
+      <Input {...register("description")} id="description" autoComplete="off" />
+      <Label htmlFor="price">Cena</Label>
+      <Input {...register("price")} id="price" autoComplete="off" />
+      <AddPizzaButton type="submit">Dodaj</AddPizzaButton>
+    </AddPizzaForm>
+  );
+
+  if(isPending) {
+    content = <Loader/>
   }
 
   return (
@@ -92,15 +109,7 @@ const NewPizza: React.FC = () => {
       <AdminPanelContainer>
         <AdminPanel>
           <AdminPanelP>Admin Panel</AdminPanelP>
-          <AddPizzaForm onSubmit={handleSubmit(onSubmit)}>
-            <Label htmlFor="name">Nazwa</Label>
-            <Input {...register('name')} id="name" autoComplete="off"/>
-            <Label htmlFor="description">Opis</Label>
-            <Input {...register('description')} id="description" autoComplete="off"/>
-            <Label htmlFor="price">Cena</Label>
-            <Input {...register('price')} id="price" autoComplete="off"/>
-            <AddPizzaButton type="submit">Dodaj</AddPizzaButton>
-          </AddPizzaForm>
+          {content}
         </AdminPanel>
       </AdminPanelContainer>
     </Fragment>
