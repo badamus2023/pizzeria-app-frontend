@@ -1,15 +1,24 @@
 import Checkout from "../Checkout/Checkout";
 import CartData from "./CartData";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 
 const Cart:React.FC<{onClose:(event:React.MouseEvent) => void}> = (props) => {
 
-  let isCheckout:boolean = false;
+
+  const [isCheckout, setIsCheckout] = useState<boolean>(false);
+
+  const stopCheckoutHandler = (): void => {
+    setIsCheckout(false);
+  }
+
+  const startCheckoutHandler = (): void => {
+    setIsCheckout(true);
+  }
 
   return (
     <Fragment>
-      {isCheckout && <CartData onClose={props.onClose}/>}
-      {<Checkout />}
+      {!isCheckout && <CartData onStartCheckout={startCheckoutHandler} onClose={props.onClose}/>}
+      {isCheckout && <Checkout onGoBack={stopCheckoutHandler}/>}
     </Fragment>
   );
 }

@@ -5,7 +5,7 @@ import Cart from '../../assets/basket-fill.svg'
 import { useQuery } from "@tanstack/react-query";
 import { CartItemInterface, fetchCart } from "../../utils/https";
 
-const Header:React.FC<{onClick: (event:React.MouseEvent) => void}> = (props) => {
+const Header:React.FC<{onOpenModal: (event:React.MouseEvent) => void}> = (props) => {
 
     const {data, isPending, isError, error} = useQuery<CartItemInterface[]>({
         queryKey:['cart'],
@@ -24,7 +24,7 @@ const Header:React.FC<{onClick: (event:React.MouseEvent) => void}> = (props) => 
                 <p>FastPizza</p>
             </div>
             <div className={classes.cartActionsSection}>
-                <button onClick={props.onClick} className={classes.cartButton}>
+                <button onClick={props.onOpenModal} className={classes.cartButton}>
                     <img src={Cart} alt='Cart'/>
                     <p>{totalQuantity}</p>
                 </button>

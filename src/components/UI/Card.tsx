@@ -1,5 +1,15 @@
 import classes from './Card.module.css'
 import React from 'react';
+import {styled} from 'styled-components'
+
+const CardSyled = styled.div`
+    padding: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    border-radius: 14px;
+    background-color: white;
+    width: 30rem;
+    margin-top: 5px;
+`;
 
 interface CardProps {
     children?: React.ReactNode;
@@ -7,7 +17,7 @@ interface CardProps {
 
 const Card:React.FC<CardProps> = (props) => {
     return (
-        <div className={classes.card}>{props.children}</div>
+        <CardSyled>{props.children}</CardSyled>
     );
 }
 

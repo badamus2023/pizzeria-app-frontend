@@ -11,23 +11,23 @@ const App:React.FC = (props) => {
 
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
 
-  const closeModalHandler = () => {
+  const closeModalHandler = (): void => {
     setModalIsOpen(false);
   }
 
-  const openModalHandler = () => {
+  const openModalHandler = (): void => {
     setModalIsOpen(true);
   }
 
   return (
     <QueryClientProvider client={queryClient}>
     <Fragment>
-      <Header onClick={openModalHandler} />
+      <Header onOpenModal={openModalHandler} />
       <main>
           {modalIsOpen && <Modal onClose={closeModalHandler}>
           <Cart onClose={closeModalHandler}/>
           </Modal>}
-          <NewPizza />
+          <NewPizza/>
           <AviablePizzas />
       </main>
     </Fragment>
