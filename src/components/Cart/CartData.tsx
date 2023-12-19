@@ -41,7 +41,7 @@ const CartButton = styled.button`
 
 const CartTotalPrice = styled.p`
   font-weight: bold;
-`
+`;
 
 const CartData:React.FC<{onClose:(event:React.MouseEvent) => void; onStartCheckout:(event:React.MouseEvent) => void;}> = (props) => {
 

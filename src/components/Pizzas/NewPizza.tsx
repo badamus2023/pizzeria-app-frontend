@@ -1,8 +1,64 @@
 import React, { Fragment } from "react";
-import classes from './NewPizza.module.css'
 import { useMutation } from "@tanstack/react-query";
 import { NewPizzaObj, addPizza, queryClient } from "../../utils/https";
 import {useForm, SubmitHandler} from 'react-hook-form'
+import { styled } from 'styled-components';
+
+const AdminPanelContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+`;
+
+const AdminPanel = styled.div`
+  width: 25%;
+  height: 20rem;
+  border-radius: 15px;
+  background-color: rgb(255,165,0,0.5);
+  text-align: center;
+`;
+
+const AddPizzaForm = styled.form`
+  display:flex;
+  flex-direction: column;
+  gap: 5px;
+  align-items: center;
+`;
+
+const Input = styled.input`
+  border-radius: 15px;
+  height: 20px;
+  text-align: center;
+  border: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  font-weight: 500;
+  font-size: 15px;
+`;
+
+const Label = styled.label`
+  font-size: 20px;
+  font-weight: bold;
+`;
+
+const AdminPanelP = styled.h2`
+`;
+
+const AddPizzaButton = styled.button`
+  margin-top: 1rem;
+  width: 10rem;
+  height: 2rem;
+  border-radius: 15px;
+  background-color: gold;
+  font-weight: bold;
+  border: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+
+  &:hover {
+    opacity: 0.7;
+    cursor: pointer;
+  }
+`;
 
 const NewPizza: React.FC = () => {
 
@@ -33,20 +89,20 @@ const NewPizza: React.FC = () => {
 
   return (
     <Fragment>
-      <div className={classes.adminPanelContainer}>
-        <div className={classes.adminPanel}>
-          <h2>Admin Panel</h2>
-          <form onSubmit={handleSubmit(onSubmit)} className={classes.addPizzaForm}>
-            <label htmlFor="name">Nazwa</label>
-            <input {...register('name')} id="name" autoComplete="off"/>
-            <label htmlFor="description">Opis</label>
-            <input {...register('description')} id="description" autoComplete="off"/>
-            <label htmlFor="price">Cena</label>
-            <input {...register('price')} id="price" autoComplete="off"/>
-            <button type="submit">Dodaj</button>
-          </form>
-        </div>
-      </div>
+      <AdminPanelContainer>
+        <AdminPanel>
+          <AdminPanelP>Admin Panel</AdminPanelP>
+          <AddPizzaForm onSubmit={handleSubmit(onSubmit)}>
+            <Label htmlFor="name">Nazwa</Label>
+            <Input {...register('name')} id="name" autoComplete="off"/>
+            <Label htmlFor="description">Opis</Label>
+            <Input {...register('description')} id="description" autoComplete="off"/>
+            <Label htmlFor="price">Cena</Label>
+            <Input {...register('price')} id="price" autoComplete="off"/>
+            <AddPizzaButton type="submit">Dodaj</AddPizzaButton>
+          </AddPizzaForm>
+        </AdminPanel>
+      </AdminPanelContainer>
     </Fragment>
   );
 };
