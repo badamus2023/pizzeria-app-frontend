@@ -4,6 +4,12 @@ import Cart from '../../assets/basket-fill.svg'
 import { useQuery } from "@tanstack/react-query";
 import { CartItemInterface, fetchCart } from "../../utils/https";
 import { styled } from 'styled-components';
+import Loader from "./Loader";
+
+interface CartButtonPProps {
+    color?:string,
+    backgroundColor?:string,
+};
 
 const HeaderStyled = styled.header`
     display: flex;
@@ -54,13 +60,13 @@ const CartButtonImg = styled.img`
     margin-bottom: 5px;
 `;
 
-const CartButtonP = styled.p`
-    border: solid gold 2px;
-    color: black;
-    background-color: gold;
+const CartButtonP = styled.p<CartButtonPProps>`
+    border: solid ${(props) => props.backgroundColor || 'gold'} 2px;
+    color: ${(props) => props.color || 'black'};
+    background-color: ${(props) => props.backgroundColor || 'gold'};
     text-align: center;
-    font-weight: bold;
-    font-size: 13px;
+    font-weight: bolder;
+    font-size: 14px;
     width: 1rem;
     height: 1rem;
     border-radius: 50%;
@@ -68,12 +74,31 @@ const CartButtonP = styled.p`
 
 const Header:React.FC<{onOpenModal: (event:React.MouseEvent) => void}> = (props) => {
 
-    const {data, isSuccess, isError, error} = useQuery<CartItemInterface[]>({
+    const { data, isSuccess, isError, isPending } = useQuery<CartItemInterface[]>({
         queryKey:['cart'],
         queryFn:fetchCart,
     });
 
-    const totalQuantity = data?.reduce((sum:number,item:CartItemInterface) => sum + item.quantity, 0) || 0; 
+    const totalQuantity = data?.reduce((sum:number,item:CartItemInterface) => sum + item.quantity, 0) || 0;
+
+    let content:React.ReactNode;
+
+    if(isPending) {
+        content = <Loader size='1rem'/>
+    }
+
+    if(isError) {
+        content = (
+            <CartButtonP color='black' backgroundColor="red">!</CartButtonP>
+        );
+    }
+
+
+    if(data) {
+        content = (
+            <CartButtonP>{totalQuantity}</CartButtonP>
+        )
+    }
 
     return (
         <Fragment>
@@ -85,7 +110,7 @@ const Header:React.FC<{onOpenModal: (event:React.MouseEvent) => void}> = (props)
             <CartActionsSection>
                 <CartButton disabled={!isSuccess} onClick={props.onOpenModal}>
                     <CartButtonImg src={Cart} alt='Cart'/>
-                    <CartButtonP>{totalQuantity}</CartButtonP>
+                    {content}
                 </CartButton>
             </CartActionsSection>
         </HeaderStyled>

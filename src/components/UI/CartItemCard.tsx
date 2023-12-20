@@ -1,4 +1,3 @@
-import classes from './CartItemCard.module.css'
 import React from 'react';
 import { styled } from 'styled-components'
 

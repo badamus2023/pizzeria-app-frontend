@@ -5,6 +5,10 @@ import {useForm, SubmitHandler} from 'react-hook-form'
 import { styled } from 'styled-components';
 import Loader from "../UI/Loader";
 
+interface InputProps {
+  $isValid: boolean;
+}
+
 const AdminPanelContainer = styled.div`
   display: flex;
   justify-content: center;
@@ -14,9 +18,9 @@ const AdminPanelContainer = styled.div`
 
 const AdminPanel = styled.div`
   width: 25%;
-  height: 20rem;
+  height: auto;
   border-radius: 15px;
-  background-color: rgb(255,165,0,0.5);
+  background-color: rgb(255,165,0,0.7);
   text-align: center;
 `;
 
@@ -27,7 +31,7 @@ const AddPizzaForm = styled.form`
   align-items: center;
 `;
 
-const Input = styled.input`
+const Input = styled.input<InputProps>`
   border-radius: 15px;
   height: 20px;
   text-align: center;
@@ -35,6 +39,9 @@ const Input = styled.input`
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   font-weight: 500;
   font-size: 15px;
+  outline: none;
+
+  ${(props) => props.$isValid ? '' : 'border: 2px solid red; background-color: rgba(255, 0, 0, 0.2)'}
 `;
 
 const Label = styled.label`
@@ -45,7 +52,14 @@ const Label = styled.label`
 const AdminPanelP = styled.h2`
 `;
 
+export const ErrorP = styled.p`
+color: rgba(128, 0, 0, 0.8);
+font-size: 14px;
+letter-spacing: 1px;
+`;
+
 const AddPizzaButton = styled.button`
+  margin-bottom: 1rem;
   margin-top: 1rem;
   width: 10rem;
   height: 2rem;
@@ -76,7 +90,8 @@ const NewPizza: React.FC = () => {
     },
   });
 
-  const {register, handleSubmit} = useForm<NewPizzaForm>()
+  const {register, handleSubmit, formState: { errors }} = useForm<NewPizzaForm>()
+
   const onSubmit:SubmitHandler<NewPizzaForm> = (data) => {
     const pizzaData:NewPizzaObj = {
       pizza: {
@@ -88,14 +103,44 @@ const NewPizza: React.FC = () => {
     mutate(pizzaData);
   };
 
-  let content:React.ReactNode = (
+  let content: React.ReactNode = (
     <AddPizzaForm onSubmit={handleSubmit(onSubmit)}>
       <Label htmlFor="name">Nazwa</Label>
-      <Input {...register("name")} id="name" autoComplete="off" />
+      <Input
+        {...register("name", { required: true })}
+        id="name"
+        autoComplete="off"
+        aria-invalid={errors.name ? "true" : "false"}
+        $isValid={!errors.name ? true : false}
+      />
+      {errors.name?.type === "required" && (
+        <ErrorP role="alert">*To pole nie może być puste</ErrorP>
+      )}
       <Label htmlFor="description">Opis</Label>
-      <Input {...register("description")} id="description" autoComplete="off" />
+      <Input
+        {...register("description", { required: true })}
+        id="description"
+        autoComplete="off"
+        aria-invalid={errors.description ? "true" : "false"}
+        $isValid={!errors.description ? true : false}
+      />
+      {errors.description?.type === "required" && (
+        <ErrorP role="alert">*To pole nie może być puste</ErrorP>
+      )}
       <Label htmlFor="price">Cena</Label>
-      <Input {...register("price")} id="price" autoComplete="off" />
+      <Input
+        {...register("price", { required: true, pattern: /\d+(\.\d{2})?/ })}
+        id="price"
+        autoComplete="off"
+        aria-invalid={errors.price ? "true" : "false"}
+        $isValid={!errors.price ? true : false}
+      />
+      {errors.price?.type === "required" && (
+        <ErrorP role="alert">*To pole nie może być puste</ErrorP>
+      )}
+      {errors.price?.type === "pattern" && (
+        <ErrorP role="alert">*Nieprawidłowy format. (1.00)</ErrorP>
+      )}
       <AddPizzaButton type="submit">Dodaj</AddPizzaButton>
     </AddPizzaForm>
   );

@@ -1,5 +1,4 @@
 import React from "react";
-import classes from './PizzaItem.module.css'
 import Card from "../UI/Card";
 import trash from "../../assets/trash.svg"
 import { useMutation } from "@tanstack/react-query";
