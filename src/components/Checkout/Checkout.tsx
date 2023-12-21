@@ -32,7 +32,12 @@ const Input = styled.input<InputProps>`
   font-weight: bold;
   outline: none;
 
+  @media (max-width: 768px) {
+    height: 1.5rem;
+  }
+
   ${(props) => props.$isValid ? '' : 'border: 2px solid red; background-color: rgba(255, 0, 0, 0.2)'}
+
 `;
 
 const Label = styled.label`

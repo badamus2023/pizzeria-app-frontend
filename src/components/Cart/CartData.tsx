@@ -41,6 +41,10 @@ const CartButton = styled.button`
 
 const CartTotalPrice = styled.p`
   font-weight: bold;
+
+  @media (max-width: 768px) {
+    font-size: 15px;
+  }
 `;
 
 const CartData:React.FC<{onClose:(event:React.MouseEvent) => void; onStartCheckout:(event:React.MouseEvent) => void;}> = (props) => {

@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { NewPizzaObj, addPizza, queryClient } from "../../utils/https";
 import {useForm, SubmitHandler} from 'react-hook-form'
@@ -22,6 +22,8 @@ const AdminPanel = styled.div`
   border-radius: 15px;
   background-color: rgb(255,165,0,0.7);
   text-align: center;
+
+
 
   @media (max-width: 768px) {
     width: 70%;
@@ -54,12 +56,20 @@ const Label = styled.label`
 `;
 
 const AdminPanelP = styled.h2`
+&:hover {
+  opacity:0.7;
+  cursor: pointer;
+}
 `;
 
 export const ErrorP = styled.p`
 color: rgba(128, 0, 0, 0.8);
 font-size: 14px;
 letter-spacing: 1px;
+
+@media (max-width: 768px) {
+  font-size: 12px;
+}
 `;
 
 const AddPizzaButton = styled.button`
@@ -87,6 +97,14 @@ const NewPizza: React.FC = () => {
     price: string,
   }
 
+  const [isAdminPanelClicked, setIsAdminPanelClicked] = useState<boolean>(false);
+
+  const showAdminPanelHandler = ():void => {
+    setIsAdminPanelClicked(!isAdminPanelClicked)
+  }
+
+
+
   const { mutate, isPending, isError, error } = useMutation({
     mutationFn: addPizza,
     onSuccess: () => {
@@ -107,7 +125,10 @@ const NewPizza: React.FC = () => {
     mutate(pizzaData);
   };
 
-  let content: React.ReactNode = (
+  let content: React.ReactNode;
+
+  if(isAdminPanelClicked){
+  content = (
     <AddPizzaForm onSubmit={handleSubmit(onSubmit)}>
       <Label htmlFor="name">Nazwa</Label>
       <Input
@@ -147,7 +168,8 @@ const NewPizza: React.FC = () => {
       )}
       <AddPizzaButton type="submit">Dodaj</AddPizzaButton>
     </AddPizzaForm>
-  );
+  );}
+  
 
   if(isPending) {
     content = <Loader/>
@@ -157,7 +179,7 @@ const NewPizza: React.FC = () => {
     <Fragment>
       <AdminPanelContainer>
         <AdminPanel>
-          <AdminPanelP>Admin Panel</AdminPanelP>
+          <AdminPanelP onClick={showAdminPanelHandler} >Admin Panel</AdminPanelP>
           {content}
         </AdminPanel>
       </AdminPanelContainer>

@@ -26,8 +26,8 @@ const BackdropStyled = styled.div`
 const ModalStyled = styled.div`
   position: fixed;
   top: 15vh;
-  left: 5%;
-  width: 90%;
+  left: calc(50% - 20rem);
+  width: 40rem;
   background-color: white;
   padding: 1rem;
   border-radius: 14px;
@@ -35,9 +35,9 @@ const ModalStyled = styled.div`
   z-index: 30;
   animation: ${slideDown} 300ms ease-out forwards;
 
-  @media (min-width: 768px) {
-    width: 40rem;
-    left: calc(50% - 20rem);
+  @media (max-width: 768px) {
+    width: 20rem;
+    left: calc(50% - 11rem)
   }
 `;
 

@@ -8,6 +8,10 @@ const CartItemCardStyled = styled.div`
     background-color: rgba(250, 165, 7, 0.836);
     width: 30rem;
     margin-top: 5px;
+
+    @media (max-width: 768px) {
+        width: 15rem;
+    }
 `;
 
 interface CardProps {
