@@ -12,13 +12,31 @@ const AviablePizzasContainer = styled.div`
 
 const  PizzasMenu = styled.div`
   display: flex;
+  box-sizing: border-box;
   flex-direction: column;
   align-items: center;
   background-color: rgb(120, 120, 120, 0.3);
   width: 50vw;
-  height: 89.4vh;
-  max-height: 89.4vh;
+  height: 100vh;
+  max-height: 100vh;
   overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+  }
+
+  @media (max-width: 768px) {
+    width: 100vw;
+  }
 `;
 
 const PizzaItemsContainer = styled.div`

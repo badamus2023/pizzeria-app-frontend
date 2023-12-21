@@ -8,6 +8,10 @@ const CardSyled = styled.div`
     background-color: white;
     width: 30rem;
     margin-top: 5px;
+
+    @media (max-width: 768px) {
+        width: 20rem;
+    }
 `;
 
 interface CardProps {

@@ -7,7 +7,7 @@ import Cart from './components/Cart/Cart';
 import { queryClient } from './utils/https';
 import { QueryClientProvider } from '@tanstack/react-query';
 
-const App:React.FC = (props) => {
+const App:React.FC = () => {
 
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
 

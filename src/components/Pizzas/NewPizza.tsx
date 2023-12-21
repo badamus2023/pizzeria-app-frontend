@@ -22,6 +22,10 @@ const AdminPanel = styled.div`
   border-radius: 15px;
   background-color: rgb(255,165,0,0.7);
   text-align: center;
+
+  @media (max-width: 768px) {
+    width: 70%;
+  }
 `;
 
 const AddPizzaForm = styled.form`

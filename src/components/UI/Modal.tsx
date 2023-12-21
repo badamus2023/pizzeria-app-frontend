@@ -38,7 +38,7 @@ const ModalStyled = styled.div`
   @media (min-width: 768px) {
     width: 40rem;
     left: calc(50% - 20rem);
-}
+  }
 `;
 
 

@@ -84,88 +84,91 @@ const Checkout:React.FC<{onGoBack: (event:React.MouseEvent) => void}> = (props) 
     console.log(data);
 
   return (
-      <CheckoutFormContainer>
-        <CheckoutForm onSubmit={handleSubmit(onSubmit)}>
-          <Label htmlFor="checkoutName">Imie</Label>
-          <Input
-            {...register("firstName", { required: true })}
-            id="checkoutName"
-            autoComplete="off"
-            aria-invalid={errors.firstName ? "true" : "false"}
-            $isValid={!errors.firstName ? true : false}
-          />
-          {errors.firstName?.type === "required" && (
-            <ErrorP>*To pole nie może być puste</ErrorP>
-          )}
-          <Label htmlFor="checkoutLastName">Nazwisko</Label>
-          <Input
-            {...register("lastName", { required: true })}
-            id="checkoutLastName"
-            autoComplete="off"
-            aria-invalid={errors.lastName ? "true" : "false"}
-            $isValid={!errors.lastName ? true : false}
-          />
-          {errors.lastName?.type === "required" && (
-            <ErrorP>*To pole nie może być puste</ErrorP>
-          )}
-          <Label htmlFor="checkoutStreet">Adres</Label>
-          <Input
-            {...register("street", { required: true })}
-            id="checkoutStreet"
-            autoComplete="off"
-            aria-invalid={errors.street ? "true" : "false"}
-            $isValid={!errors.street ? true : false}
-          />
-          {errors.street?.type === "required" && (
-            <ErrorP>*To pole nie może być puste</ErrorP>
-          )}
-          <Label htmlFor="checkoutCity">Miasto</Label>
-          <Input
-            {...register("city", { required: true })}
-            id="checkoutCity"
-            autoComplete="off"
-            aria-invalid={errors.city ? "true" : "false"}
-            $isValid={!errors.city ? true : false}
-          />
-          {errors.city?.type === "required" && (
-            <ErrorP>*To pole nie może być puste</ErrorP>
-          )}
-          <Label htmlFor="checkoutZip-code">Kod pocztowy</Label>
-          <Input
-            {...register("zipCode", { required: true, pattern: /[0-9]{2}[\-]?[0-9]{3}/ })}
-            id="checkoutZip-code"
-            autoComplete="off"
-            aria-invalid={errors.zipCode ? "true" : "false"}
-            $isValid={!errors.zipCode ? true : false}
-          />
-          {errors.zipCode?.type === "required" && (
-            <ErrorP>*To pole nie może być puste</ErrorP>
-          )}
-          {errors.zipCode?.type === "pattern" && (
-            <ErrorP>*Zły Format (00-000)</ErrorP>
-          )}
-          <Label htmlFor="checkoutPhone">Numer Telefonu</Label>
-          <Input
-            {...register("phone", { required: true, pattern: /[0-9]{9}/ })}
-            id="checkoutPhone"
-            autoComplete="off"
-            aria-invalid={errors.phone ? "true" : "false"}
-            $isValid={!errors.phone ? true : false}
-          />
-          {errors.phone?.type === "required" && (
-            <ErrorP>*To pole nie może być puste</ErrorP>
-          )}
-          {errors.phone?.type === "pattern" && (
-            <ErrorP>*Zły Format (000-000-000)</ErrorP>
-          )}
-          <CheckoutActions>
-            <CheckoutButton type="submit">Zamów</CheckoutButton>
-            <CheckoutButton type="button" onClick={props.onGoBack}>
-              Wróć
-            </CheckoutButton>
-          </CheckoutActions>
-        </CheckoutForm>
-      </CheckoutFormContainer>
+    <CheckoutFormContainer>
+      <CheckoutForm onSubmit={handleSubmit(onSubmit)}>
+        <Label htmlFor="checkoutName">Imie</Label>
+        <Input
+          {...register("firstName", { required: true })}
+          id="checkoutName"
+          autoComplete="off"
+          aria-invalid={errors.firstName ? "true" : "false"}
+          $isValid={!errors.firstName ? true : false}
+        />
+        {errors.firstName?.type === "required" && (
+          <ErrorP>*To pole nie może być puste</ErrorP>
+        )}
+        <Label htmlFor="checkoutLastName">Nazwisko</Label>
+        <Input
+          {...register("lastName", { required: true })}
+          id="checkoutLastName"
+          autoComplete="off"
+          aria-invalid={errors.lastName ? "true" : "false"}
+          $isValid={!errors.lastName ? true : false}
+        />
+        {errors.lastName?.type === "required" && (
+          <ErrorP>*To pole nie może być puste</ErrorP>
+        )}
+        <Label htmlFor="checkoutStreet">Adres</Label>
+        <Input
+          {...register("street", { required: true })}
+          id="checkoutStreet"
+          autoComplete="off"
+          aria-invalid={errors.street ? "true" : "false"}
+          $isValid={!errors.street ? true : false}
+        />
+        {errors.street?.type === "required" && (
+          <ErrorP>*To pole nie może być puste</ErrorP>
+        )}
+        <Label htmlFor="checkoutCity">Miasto</Label>
+        <Input
+          {...register("city", { required: true })}
+          id="checkoutCity"
+          autoComplete="off"
+          aria-invalid={errors.city ? "true" : "false"}
+          $isValid={!errors.city ? true : false}
+        />
+        {errors.city?.type === "required" && (
+          <ErrorP>*To pole nie może być puste</ErrorP>
+        )}
+        <Label htmlFor="checkoutZip-code">Kod pocztowy</Label>
+        <Input
+          {...register("zipCode", {
+            required: true,
+            pattern: /[0-9]{2}[\-]?[0-9]{3}/,
+          })}
+          id="checkoutZip-code"
+          autoComplete="off"
+          aria-invalid={errors.zipCode ? "true" : "false"}
+          $isValid={!errors.zipCode ? true : false}
+        />
+        {errors.zipCode?.type === "required" && (
+          <ErrorP>*To pole nie może być puste</ErrorP>
+        )}
+        {errors.zipCode?.type === "pattern" && (
+          <ErrorP>*Zły Format (00-000)</ErrorP>
+        )}
+        <Label htmlFor="checkoutPhone">Numer Telefonu</Label>
+        <Input
+          {...register("phone", { required: true, pattern: /[0-9]{9}/ })}
+          id="checkoutPhone"
+          autoComplete="off"
+          aria-invalid={errors.phone ? "true" : "false"}
+          $isValid={!errors.phone ? true : false}
+        />
+        {errors.phone?.type === "required" && (
+          <ErrorP>*To pole nie może być puste</ErrorP>
+        )}
+        {errors.phone?.type === "pattern" && (
+          <ErrorP>*Zły Format (000-000-000)</ErrorP>
+        )}
+        <CheckoutActions>
+          <CheckoutButton type="submit">Zamów</CheckoutButton>
+          <CheckoutButton type="button" onClick={props.onGoBack}>
+            Wróć
+          </CheckoutButton>
+        </CheckoutActions>
+      </CheckoutForm>
+    </CheckoutFormContainer>
   );
 }
 

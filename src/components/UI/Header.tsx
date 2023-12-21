@@ -8,7 +8,8 @@ import Loader from "./Loader";
 
 interface CartButtonPProps {
     color?:string,
-    backgroundColor?:string,
+    $backgroundColor?:string,
+    $borderColor?:string,
 };
 
 const HeaderStyled = styled.header`
@@ -18,6 +19,7 @@ const HeaderStyled = styled.header`
     background-color: rgb(161, 10, 10,0.7);
     height: 7rem;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.70);
+    width:100%
 `;
 
 const LogoContainer = styled.div`
@@ -27,11 +29,20 @@ const LogoContainer = styled.div`
 
 const LogoImg = styled.img`
     margin-right: 10px;
+
+    @media (max-width: 768) {
+        width: 50%;
+        height: 50%;
+    }
 `;
 
 const LogoP = styled.p`
     font-size: 2em;
     color: gold;
+
+    @media (max-width: 768px) {
+        font-size: 1.5em;
+    }
 `;
 
 const CartActionsSection = styled.div`
@@ -53,6 +64,10 @@ const CartButton = styled.button<{disabled:boolean}>`
         opacity: 0.7;
         cursor: pointer;
     }
+
+    @media (max-width: 768px) {
+        width: 7rem;
+    }
 `;
 
 const CartButtonImg = styled.img`
@@ -61,12 +76,15 @@ const CartButtonImg = styled.img`
 `;
 
 const CartButtonP = styled.p<CartButtonPProps>`
-    border: solid ${(props) => props.backgroundColor || 'gold'} 2px;
+    display: flex;
+    algin-items: center;
+    justify-content: center;
+    border: solid ${(props) => props.$borderColor || 'gold'} 2px;
     color: ${(props) => props.color || 'black'};
-    background-color: ${(props) => props.backgroundColor || 'gold'};
+    background-color: ${(props) => props.$backgroundColor || 'gold'};
     text-align: center;
     font-weight: bolder;
-    font-size: 14px;
+    font-size: 13px;
     width: 1rem;
     height: 1rem;
     border-radius: 50%;
@@ -89,7 +107,7 @@ const Header:React.FC<{onOpenModal: (event:React.MouseEvent) => void}> = (props)
 
     if(isError) {
         content = (
-            <CartButtonP color='black' backgroundColor="red">!</CartButtonP>
+            <CartButtonP color='black' $backgroundColor="rgba(128, 0, 0, 0.8)" $borderColor="red">!</CartButtonP>
         );
     }
 
