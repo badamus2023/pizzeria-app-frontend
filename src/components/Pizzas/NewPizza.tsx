@@ -9,6 +9,10 @@ interface InputProps {
   $isValid: boolean;
 }
 
+interface TextAreaProps {
+  $isValid: boolean;
+}
+
 const AdminPanelContainer = styled.div`
   display: flex;
   justify-content: center;
@@ -38,8 +42,7 @@ const AddPizzaForm = styled.form`
 `;
 
 const Input = styled.input<InputProps>`
-  border-radius: 15px;
-  height: 20px;
+  height: 1.5rem;
   text-align: center;
   border: none;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
@@ -49,6 +52,18 @@ const Input = styled.input<InputProps>`
 
   ${(props) => props.$isValid ? '' : 'border: 2px solid red; background-color: rgba(255, 0, 0, 0.2)'}
 `;
+
+const TextArea = styled.textarea<TextAreaProps>`
+  text-algin: justify;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  font-size: 15px;
+  border: none;
+  resize: none;
+  outline: none;
+  height: 4rem;
+
+  ${(props) => props.$isValid ? '' : 'border: 2px solid red; background-color: rgba(255, 0, 0, 0.2)'}
+`
 
 const Label = styled.label`
   font-size: 20px;
@@ -142,7 +157,7 @@ const NewPizza: React.FC = () => {
         <ErrorP role="alert">*To pole nie może być puste</ErrorP>
       )}
       <Label htmlFor="description">Opis</Label>
-      <Input
+      <TextArea
         {...register("description", { required: true })}
         id="description"
         autoComplete="off"

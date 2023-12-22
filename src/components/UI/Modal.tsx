@@ -41,6 +41,13 @@ const ModalStyled = styled.div`
   }
 `;
 
+const ModalContentContainer = styled.div`
+@media (max-width: 768px) {
+  max-height: 40rem;
+  overflow-x: auto;
+}
+`
+
 
 type BackdropProps = {
     onClose: () => void;
@@ -57,7 +64,7 @@ type ModalOverlayProps = {
 const ModalOverlay:React.FC<ModalOverlayProps> = (props) => {
   return (
     <ModalStyled>
-      <div>{props.children}</div>
+      <ModalContentContainer>{props.children}</ModalContentContainer>
     </ModalStyled>
   );
 };

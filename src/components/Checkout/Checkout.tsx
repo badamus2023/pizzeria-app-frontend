@@ -46,11 +46,6 @@ const Label = styled.label`
   letter-spacing: 2px;
 `;
 
-const CheckoutActions = styled.div`
-  display: flex;
-  gap: 10px;
-`;
-
 const CheckoutForm = styled.form`
   display: flex;
   flex-direction: column;
@@ -60,6 +55,19 @@ const CheckoutForm = styled.form`
   height: auto;
   border-radius: 20px;
   text-align: center;
+`;
+
+const CheckoutActions = styled.div`
+  display: flex;
+  gap: 10px;
+  margin-bottom: 5px;
+
+  @media (max-width: 768px) {
+    margin-top: 5px;
+    flex-direction: column;
+    gap:5px;
+    margin-bottom: 5px;
+  }
 `;
 
 const CheckoutButton = styled.button`
@@ -76,6 +84,10 @@ const CheckoutButton = styled.button`
   &:hover {
     cursor: pointer;
     opacity: 0.5;
+  }
+
+  @media (max-width: 768px) {
+    margin-top: 0;
   }
 `;
 
