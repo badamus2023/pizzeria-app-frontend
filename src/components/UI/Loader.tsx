@@ -2,6 +2,7 @@ import { keyframes, styled } from 'styled-components'
 
 interface LoaderProps {
     size?:string
+    color?:string
 }
 
 const rotation = keyframes`
@@ -16,7 +17,7 @@ const rotation = keyframes`
 export const LoaderStyled = styled.span<LoaderProps>`
     width: ${(props) => props.size || '48px'};
     height: ${(props) => props.size || '48px'};
-    border: 5px solid yellow;
+    border: 5px solid ${(props) => props.color || 'yellow'};
     border-bottom-color: transparent;
     border-radius: 50%;
     display: inline-block;

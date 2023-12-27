@@ -1,10 +1,11 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import PizzaLogo from '../../assets/pizza-svgrepo-com.svg'
 import Cart from '../../assets/basket-fill.svg'
 import { useQuery } from "@tanstack/react-query";
 import { CartItemInterface, fetchCart } from "../../utils/https";
 import { styled } from 'styled-components';
 import Loader from "./Loader";
+import { toast } from "react-toastify";
 
 interface CartButtonPProps {
     color?:string,
@@ -100,6 +101,21 @@ const Header:React.FC<{onOpenModal: (event:React.MouseEvent) => void}> = (props)
     const totalQuantity = data?.reduce((sum:number,item:CartItemInterface) => sum + item.quantity, 0) || 0;
 
     let content:React.ReactNode;
+
+    useEffect(() => {
+        if (isError) {
+          toast.error(`Couldnt fetch the cart`, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            });
+        }
+      }, [isError]);
 
     if(isPending) {
         content = <Loader size='1rem'/>

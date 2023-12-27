@@ -1,9 +1,11 @@
-import React, { Fragment } from "react";
+import React from "react";
 import Card from "../UI/Card";
 import trash from "../../assets/trash.svg"
 import { useMutation } from "@tanstack/react-query";
 import { addPizzaToCart, deletePizza, queryClient, removePizzaFromCart } from "../../utils/https";
 import { styled } from 'styled-components';
+import { toast } from "react-toastify";
+import Loader from "../UI/Loader";
 
 const Meal = styled.li`
     display: flex;
@@ -49,56 +51,100 @@ const MealButton = styled.button`
 `;
 
 const PizzaItem:React.FC<{name:string, description:string, price:number, id:number}> = (props) => {
+  const { mutate, isPending: isPizzaDeletePending } = useMutation({
+    mutationFn: deletePizza,
+    onSuccess: (): void => {
+      queryClient.invalidateQueries({ queryKey: ["pizzas"] });
+    },
+    onError: (): void => {
+      toast.error(`Couldnt delete the pizza from the menu`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    },
+  });
 
-    const {mutate, isPending, isError, error} = useMutation({
-        mutationFn: deletePizza,
-        onSuccess: () => {
-            queryClient.invalidateQueries({queryKey:['pizzas']});
-        }
-    });
+  const { mutate: addPizza, isPending: isAddPizzaToCartPending } = useMutation({
+    mutationFn: addPizzaToCart,
+    onSuccess: (): void => {
+      queryClient.invalidateQueries({ queryKey: ["cart"] });
+    },
+    onError: (): void => {
+      toast.error(`Couldnt add the pizza to the cart`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    },
+  });
 
-    const {mutate:addPizza, isPending:isPizza, isError:isPizzaError, error:pizzaError} = useMutation({
-        mutationFn: addPizzaToCart,
-        onSuccess: () => {
-            queryClient.invalidateQueries({queryKey:['cart']});
-        }
-    });
+  const { mutate: removePizza, isPending: isPizzaRemoving } = useMutation({
+    mutationFn: removePizzaFromCart,
+    onSuccess: (): void => {
+      queryClient.invalidateQueries({ queryKey: ["cart"] });
+    },
+    onError: (): void => {
+      toast.error(`Couldnt remove the pizza from cart`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    },
+  });
 
-    const {mutate:removePizza, isPending:isPizzaRemoving, isError:isPizzaRemoveError,error:pizzaRemoveError} = useMutation({
-        mutationFn: removePizzaFromCart,
-        onSuccess: () => {
-            queryClient.invalidateQueries({queryKey:['cart']})
-        }
-    });
+  const removePizzaHandler = (): void => {
+    removePizza({ id: props.id });
+  };
 
-    const removePizzaHandler = ():void => {
-        removePizza({id: props.id})
-    }
+  const addPizzaToCartHandler = (): void => {
+    addPizza({ id: props.id });
+  };
 
-    const addPizzaToCartHandler = ():void => {
-        addPizza({id: props.id})
-    }
+  const deletePizzaHandler = (): void => {
+    mutate({ id: props.id });
+  };
 
-    const deletePizzaHandler = ():void => {
-        mutate({id: props.id})
-    }
-
-    return (
-        <Card>
-            <Meal>
-                <div>
-                    <MealH3>{props.name}</MealH3>
-                    <MealDescription>{props.description}</MealDescription>
-                    <MealPrice>{props.price}zł</MealPrice>
-                </div>
-                <MealActionsButton>
-                    <MealButton onClick={addPizzaToCartHandler}>+</MealButton>
-                    <MealButton onClick={removePizzaHandler} >-</MealButton>
-                    <MealButton onClick={deletePizzaHandler}><img src={trash} alt='T'/></MealButton>
-                </MealActionsButton>
-            </Meal>
-        </Card>
-    );
+  return (
+    <Card>
+      <Meal>
+        <div>
+          <MealH3>{props.name}</MealH3>
+          <MealDescription>{props.description}</MealDescription>
+          <MealPrice>{props.price}zł</MealPrice>
+        </div>
+        <MealActionsButton>
+          <MealButton onClick={addPizzaToCartHandler}>
+            {!isAddPizzaToCartPending && '+'}
+            {isAddPizzaToCartPending && <Loader size={'12px'} color={'black'}/>}
+        </MealButton>
+          <MealButton onClick={removePizzaHandler}>
+            {!isPizzaRemoving && '-'}
+            {isPizzaRemoving && <Loader size={'12px'} color={'black'}/>}
+            </MealButton>
+          <MealButton onClick={deletePizzaHandler}>
+            {!isPizzaDeletePending && <img src={trash} alt="T" />}
+            {isPizzaDeletePending && <Loader size={'12px'} color={'black'}/>}
+          </MealButton>
+        </MealActionsButton>
+      </Meal>
+    </Card>
+  );
 }
 
 export default PizzaItem;

@@ -30,7 +30,7 @@ export interface NewPizzaObj {
     }
 }
 
-interface ErrorInterface extends Error {
+export interface ErrorInterface extends Error {
 code?:number;
 info?:any;
 }
@@ -56,9 +56,7 @@ export const fetchCart = async ():Promise<Array<CartItemInterface>> => {
     const response = await fetch('http://localhost:3000/cart');
 
     if(!response.ok) {
-        const error:ErrorInterface = new Error('Pojawil sie blad przy wczytywaniu menu');
-        error.code = response.status;
-        error.info = await response.json();
+        const error:Error = new Error('Pojawil sie blad przy wczytywaniu menu');
         throw error;
     }
 

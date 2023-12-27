@@ -1,13 +1,19 @@
-import React from "react";
+import React, {useEffect} from "react";
 import PizzaItem from "./PizzaItem";
 import { useQuery } from "@tanstack/react-query";
 import { Pizza, fetchPizzas } from "../../utils/https";
 import { styled } from "styled-components";
 import Loader from "../UI/Loader";
+import { toast } from "react-toastify"
 
 const AviablePizzasContainer = styled.div`
   display: flex;
   justify-content: center;
+`;
+
+const PizzasHeader = styled.h1`
+  color: gold;
+  letter-spacing: 1px;
 `;
 
 const  PizzasMenu = styled.div`
@@ -43,7 +49,7 @@ const PizzaItemsContainer = styled.div`
   margin-top: 2rem;
 `
 
-const AviablePizzas:React.FC = () => {
+const AviablePizzas:React.FC = (props) => {
 
     const { data, isPending, isError, error } = useQuery({
         queryKey: ['pizzas'],
@@ -61,10 +67,26 @@ const AviablePizzas:React.FC = () => {
     if(isPending) {
       content = <Loader/>
     }
+    
+    useEffect(() => {
+      if (isError) {
+        toast.error(`Couldnt fetch the pizzas`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          });
+      }
+    }, [isError]);
 
     return (
       <AviablePizzasContainer>
         <PizzasMenu>
+          <PizzasHeader>Poznaj Nasze Menu</PizzasHeader>
           <PizzaItemsContainer>{content}</PizzaItemsContainer>
         </PizzasMenu>
       </AviablePizzasContainer>
