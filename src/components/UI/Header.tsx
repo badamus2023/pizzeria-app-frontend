@@ -51,7 +51,7 @@ const CartActionsSection = styled.div`
     justify-content: space-between;
 `;
 
-const CartButton = styled.button<{disabled:boolean; bounce: boolean}>`
+const CartButton = styled.button<{disabled:boolean; $bounce: boolean}>`
     display: flex;
     width: 10rem;
     justify-content: center;
@@ -60,7 +60,7 @@ const CartButton = styled.button<{disabled:boolean; bounce: boolean}>`
     border: none;
     border-radius: 15px;
     background-color: rgba(0, 0, 0, 0.3);
-    animation: ${({ bounce }) => (bounce ? "bounce 0.5s" : "none")};
+    animation: ${({ $bounce }) => ($bounce ? "bounce 0.5s" : "none")};
 
     &:hover {
         opacity: 0.7;
@@ -105,76 +105,88 @@ const CartButtonP = styled.p<CartButtonPProps>`
 `;
 
 const Header:React.FC<{onOpenModal: (event:React.MouseEvent) => void}> = (props) => {
+  const [bounce, setBounce] = useState(false);
 
-    const [ bounce, setBounce ] = useState(false);
-
-    const { data, isSuccess, isError, isPending } = useQuery<CartItemInterface[]>({
-        queryKey:['cart'],
-        queryFn:fetchCart,
-    });
-
-    const totalQuantity = data?.reduce((sum:number,item:CartItemInterface) => sum + item.quantity, 0) || 0;
-
-    let content:React.ReactNode;
-
-    useEffect(() => {
-        if (isError) {
-          toast.error(`Nie udało się wczytać zawartości koszyka`, {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-            });
-        }
-      }, [isError]);
-
-      useEffect(() => {
-        setBounce(true);
-    
-        const timeoutId = setTimeout(() => {
-          setBounce(false);
-        }, 500);
-    
-        return () => clearTimeout(timeoutId);
-      }, [totalQuantity]);
-
-    if(isPending) {
-        content = <Loader size='1rem'/>
+  const { data, isSuccess, isError, isPending } = useQuery<CartItemInterface[]>(
+    {
+      queryKey: ["cart"],
+      queryFn: fetchCart,
     }
+  );
 
-    if(isError) {
-        content = (
-            <CartButtonP color='black' $backgroundColor="rgba(128, 0, 0, 0.8)" $borderColor="red">!</CartButtonP>
-        );
+  const totalQuantity =
+    data?.reduce(
+      (sum: number, item: CartItemInterface) => sum + item.quantity,
+      0
+    ) || 0;
+
+  let content: React.ReactNode;
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(`Nie udało się wczytać zawartości koszyka`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
     }
+  }, [isError]);
 
+  useEffect(() => {
+    setBounce(true);
 
-    if(data) {
-        content = (
-            <CartButtonP>{totalQuantity}</CartButtonP>
-        )
-    }
+    const timeoutId = setTimeout(() => {
+      setBounce(false);
+    }, 500);
 
-    return (
-        <Fragment>
-        <HeaderStyled>
-            <LogoContainer>
-                <LogoImg src={PizzaLogo} alt='Pizza'/>
-                <LogoP>FastPizza</LogoP>
-            </LogoContainer>
-            <CartActionsSection>
-                <CartButton disabled={!isSuccess} onClick={props.onOpenModal} bounce={bounce}>
-                    <CartButtonImg src={Cart} alt='Cart'/>
-                    {content}
-                </CartButton>
-            </CartActionsSection>
-        </HeaderStyled>
-        </Fragment>
+    return () => clearTimeout(timeoutId);
+  }, [totalQuantity]);
+
+  if (isPending) {
+    content = <Loader size="1rem" />;
+  }
+
+  if (isError) {
+    content = (
+      <CartButtonP
+        color="black"
+        $backgroundColor="rgba(128, 0, 0, 0.8)"
+        $borderColor="red"
+      >
+        !
+      </CartButtonP>
     );
+  }
+
+  if (data) {
+    content = <CartButtonP>{totalQuantity}</CartButtonP>;
+  }
+
+  return (
+    <Fragment>
+      <HeaderStyled>
+        <LogoContainer>
+          <LogoImg src={PizzaLogo} alt="Pizza" />
+          <LogoP>FastPizza</LogoP>
+        </LogoContainer>
+        <CartActionsSection>
+          <CartButton
+            disabled={!isSuccess}
+            onClick={props.onOpenModal}
+            $bounce={bounce}
+          >
+            <CartButtonImg src={Cart} alt="Cart" />
+            {content}
+          </CartButton>
+        </CartActionsSection>
+      </HeaderStyled>
+    </Fragment>
+  );
 }
 
 export default Header;

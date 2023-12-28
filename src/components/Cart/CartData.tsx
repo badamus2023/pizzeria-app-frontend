@@ -48,55 +48,53 @@ const CartTotalPrice = styled.p`
 `;
 
 const CartData:React.FC<{onClose:(event:React.MouseEvent) => void; onStartCheckout:(event:React.MouseEvent) => void;}> = (props) => {
+  const { data } = useQuery<CartItemInterface[]>({
+    queryKey: ["cart"],
+    queryFn: fetchCart,
+  });
 
-    const { data } = useQuery<CartItemInterface[]>({
-        queryKey: ['cart'],
-        queryFn: fetchCart,
-    });
+  let content: React.ReactNode;
 
-    let content:React.ReactNode;
+  if (data) {
+    content = data.map((order: CartItemInterface) => (
+      <CartItem
+        key={order.id}
+        name={order.name}
+        quantity={order.quantity}
+        price={order.price}
+      />
+    ));
+  }
 
-    if(data) {
-      content = data.map((order:CartItemInterface) => 
-        <CartItem 
-          key={order.id}
-          name={order.name}
-          quantity={order.quantity}
-          price={order.price}
-        />
-      );
-    };
+  const totalPrice =
+    data?.reduce(
+      (sum: number, item: CartItemInterface) =>
+        sum + item.price * item.quantity,
+      0
+    ) || 0;
 
-    const totalPrice = data?.reduce((sum:number,item:CartItemInterface) => sum + item.price * item.quantity, 0) || 0;
+  let isDataEmpty: boolean;
 
-    let isDataEmpty:boolean;
+  if (!data || data.length === 0) {
+    isDataEmpty = false;
+  } else {
+    isDataEmpty = true;
+  }
 
-    if(!data || data.length === 0 ) {
-        isDataEmpty = false;
-    } else {
-        isDataEmpty = true;
-    }
-
-    return (
-      <Fragment>
-        <CartItemContainer>{content}</CartItemContainer>
-        <CartFooter>
-          <CartButtons>
-            <CartButton onClick={props.onClose}>
-              Zamknij
-            </CartButton>
-            {isDataEmpty && (
-              <CartButton
-                onClick={props.onStartCheckout}
-              >
-                Zamów
-              </CartButton>
-            )}
-          </CartButtons>
-          <CartTotalPrice>Łączna kwota: {totalPrice} zł</CartTotalPrice>
-        </CartFooter>
-      </Fragment>
-    );
+  return (
+    <Fragment>
+      <CartItemContainer>{content}</CartItemContainer>
+      <CartFooter>
+        <CartButtons>
+          <CartButton onClick={props.onClose}>Zamknij</CartButton>
+          {isDataEmpty && (
+            <CartButton onClick={props.onStartCheckout}>Zamów</CartButton>
+          )}
+        </CartButtons>
+        <CartTotalPrice>Łączna kwota: {totalPrice} zł</CartTotalPrice>
+      </CartFooter>
+    </Fragment>
+  );
 }
 
 export default CartData;

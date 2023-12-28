@@ -49,48 +49,53 @@ const PizzaItemsContainer = styled.div`
   margin-top: 2rem;
 `
 
-const AviablePizzas:React.FC = (props) => {
+const AviablePizzas: React.FC = (props) => {
+  const { data, isPending, isError } = useQuery({
+    queryKey: ["pizzas"],
+    queryFn: fetchPizzas,
+  });
 
-    const { data, isPending, isError, error } = useQuery({
-        queryKey: ['pizzas'],
-        queryFn: fetchPizzas,
-    });
+  let content: React.ReactNode;
 
-    let content:React.ReactNode;
+  if (data) {
+    content = data.map((pizza: Pizza) => (
+      <PizzaItem
+        key={pizza.id}
+        id={pizza.id}
+        description={pizza.description}
+        price={pizza.price}
+        name={pizza.name}
+      />
+    ));
+  }
 
-    if(data) {
-        content = data.map((pizza:Pizza) => 
-        <PizzaItem key={pizza.id} id={pizza.id} description={pizza.description} price={pizza.price} name={pizza.name}/>
-        )
+  if (isPending) {
+    content = <Loader />;
+  }
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(`Nie udało się wczytać menu`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
     }
+  }, [isError]);
 
-    if(isPending) {
-      content = <Loader/>
-    }
-    
-    useEffect(() => {
-      if (isError) {
-        toast.error(`Nie udało się wczytać menu`, {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-          });
-      }
-    }, [isError]);
-
-    return (
-      <AviablePizzasContainer>
-        <PizzasMenu>
-          <PizzasHeader>Poznaj Nasze Menu</PizzasHeader>
-          <PizzaItemsContainer>{content}</PizzaItemsContainer>
-        </PizzasMenu>
-      </AviablePizzasContainer>
-    );
+  return (
+    <AviablePizzasContainer>
+      <PizzasMenu>
+        <PizzasHeader>Poznaj Nasze Menu</PizzasHeader>
+        <PizzaItemsContainer>{content}</PizzaItemsContainer>
+      </PizzasMenu>
+    </AviablePizzasContainer>
+  );
 };
 
 export default AviablePizzas;

@@ -1,7 +1,10 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { styled } from "styled-components";
 import {useForm, SubmitHandler} from 'react-hook-form';
 import { ErrorP } from "../Pizzas/NewPizza";
+import { toast } from "react-toastify";
+import { useMutation } from "@tanstack/react-query";
+import { clearCart, queryClient } from "../../utils/https";
 
 interface InputProps {
   $isValid:boolean;
@@ -91,14 +94,38 @@ const CheckoutButton = styled.button`
   }
 `;
 
-const Checkout:React.FC<{onGoBack: (event:React.MouseEvent) => void}> = (props) => {
+const Checkout:React.FC<{onGoBack: (event:React.MouseEvent) => void; onSubmit: () => void}> = (props) => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<CheckoutFormInput>();
-  const onSubmit: SubmitHandler<CheckoutFormInput> = (data) =>
+
+  const { mutate } = useMutation({
+    mutationFn: clearCart,
+    onSuccess: () => {
+      toast.success(`Zamówienie zostało złożone pomyślnie`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+
+      queryClient.invalidateQueries({ queryKey: ["cart"] });
+      reset();
+      props.onSubmit();
+    },
+  });
+
+  const onSubmit: SubmitHandler<CheckoutFormInput> = (data) => {
     console.log(data);
+    mutate();
+  };
 
   return (
     <CheckoutFormContainer>

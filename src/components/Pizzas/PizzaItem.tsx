@@ -140,16 +140,18 @@ const PizzaItem:React.FC<{name:string, description:string, price:number, id:numb
         </div>
         <MealActionsButton>
           <MealButton onClick={addPizzaToCartHandler}>
-            {!isAddPizzaToCartPending && '+'}
-            {isAddPizzaToCartPending && <Loader size={'12px'} color={'black'}/>}
-        </MealButton>
+            {!isAddPizzaToCartPending && "+"}
+            {isAddPizzaToCartPending && (
+              <Loader size={"12px"} color={"black"} />
+            )}
+          </MealButton>
           <MealButton onClick={removePizzaHandler}>
-            {!isPizzaRemoving && '-'}
-            {isPizzaRemoving && <Loader size={'12px'} color={'black'}/>}
-            </MealButton>
+            {!isPizzaRemoving && "-"}
+            {isPizzaRemoving && <Loader size={"12px"} color={"black"} />}
+          </MealButton>
           <MealButton onClick={deletePizzaHandler}>
             {!isPizzaDeletePending && <img src={trash} alt="T" />}
-            {isPizzaDeletePending && <Loader size={'12px'} color={'black'}/>}
+            {isPizzaDeletePending && <Loader size={"12px"} color={"black"} />}
           </MealButton>
         </MealActionsButton>
       </Meal>

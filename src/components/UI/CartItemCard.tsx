@@ -15,14 +15,12 @@ const CartItemCardStyled = styled.div`
 `;
 
 interface CardProps {
-    children?: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 
 const CartItemCard:React.FC<CardProps> = (props) => {
-    return (
-        <CartItemCardStyled>{props.children}</CartItemCardStyled>
-    );
+  return <CartItemCardStyled>{props.children}</CartItemCardStyled>;
 }
 
 export default CartItemCard;

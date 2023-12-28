@@ -15,13 +15,11 @@ const CardSyled = styled.div`
 `;
 
 interface CardProps {
-    children?: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 const Card:React.FC<CardProps> = (props) => {
-    return (
-        <CardSyled>{props.children}</CardSyled>
-    );
+  return <CardSyled>{props.children}</CardSyled>;
 }
 
 export default Card;
