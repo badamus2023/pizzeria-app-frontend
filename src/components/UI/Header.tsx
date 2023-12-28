@@ -119,7 +119,7 @@ const Header:React.FC<{onOpenModal: (event:React.MouseEvent) => void}> = (props)
 
     useEffect(() => {
         if (isError) {
-          toast.error(`Couldnt fetch the cart`, {
+          toast.error(`Nie udało się wczytać zawartości koszyka`, {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: false,

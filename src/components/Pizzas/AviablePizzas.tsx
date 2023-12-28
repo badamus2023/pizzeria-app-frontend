@@ -70,7 +70,7 @@ const AviablePizzas:React.FC = (props) => {
     
     useEffect(() => {
       if (isError) {
-        toast.error(`Couldnt fetch the pizzas`, {
+        toast.error(`Nie udało się wczytać menu`, {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
