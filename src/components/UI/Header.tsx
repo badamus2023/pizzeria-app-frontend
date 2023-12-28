@@ -64,7 +64,7 @@ const CartButton = styled.button<{disabled:boolean; $bounce: boolean}>`
 
     &:hover {
         opacity: 0.7;
-        cursor: pointer;
+        cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
     }
 
     @media (max-width: 768px) {
@@ -138,7 +138,9 @@ const Header:React.FC<{onOpenModal: (event:React.MouseEvent) => void}> = (props)
   }, [isError]);
 
   useEffect(() => {
-    setBounce(true);
+    if (isSuccess) {
+      setBounce(true);
+    }
 
     const timeoutId = setTimeout(() => {
       setBounce(false);

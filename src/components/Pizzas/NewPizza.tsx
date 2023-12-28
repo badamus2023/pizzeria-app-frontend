@@ -112,8 +112,7 @@ const NewPizza: React.FC = () => {
     price: string;
   }
 
-  const [isAdminPanelClicked, setIsAdminPanelClicked] =
-    useState<boolean>(false);
+  const [isAdminPanelClicked, setIsAdminPanelClicked] = useState<boolean>(false);
 
   const showAdminPanelHandler = (): void => {
     setIsAdminPanelClicked(!isAdminPanelClicked);
