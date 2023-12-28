@@ -49,7 +49,7 @@ const CartTotalPrice = styled.p`
 
 const CartData:React.FC<{onClose:(event:React.MouseEvent) => void; onStartCheckout:(event:React.MouseEvent) => void;}> = (props) => {
 
-    const {data, isPending, isError, error} = useQuery<CartItemInterface[]>({
+    const { data } = useQuery<CartItemInterface[]>({
         queryKey: ['cart'],
         queryFn: fetchCart,
     });

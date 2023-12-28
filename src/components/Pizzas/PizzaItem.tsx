@@ -54,10 +54,20 @@ const PizzaItem:React.FC<{name:string, description:string, price:number, id:numb
   const { mutate, isPending: isPizzaDeletePending } = useMutation({
     mutationFn: deletePizza,
     onSuccess: (): void => {
+      toast.success(`Pizza została usunięta z menu`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
       queryClient.invalidateQueries({ queryKey: ["pizzas"] });
     },
     onError: (): void => {
-      toast.error(`Couldnt delete the pizza from the menu`, {
+      toast.error(`Wystąpił błąd podczas usuwania pizzy z menu`, {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -76,7 +86,7 @@ const PizzaItem:React.FC<{name:string, description:string, price:number, id:numb
       queryClient.invalidateQueries({ queryKey: ["cart"] });
     },
     onError: (): void => {
-      toast.error(`Couldnt add the pizza to the cart`, {
+      toast.error(`Wystąpił błąd podczas dodawania pizzy do koszyka`, {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -95,7 +105,7 @@ const PizzaItem:React.FC<{name:string, description:string, price:number, id:numb
       queryClient.invalidateQueries({ queryKey: ["cart"] });
     },
     onError: (): void => {
-      toast.error(`Couldnt remove the pizza from cart`, {
+      toast.error(`Wystąpił błąd podczas usuwania pizzy z koszyka`, {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,

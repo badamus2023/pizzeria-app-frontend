@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import PizzaLogo from '../../assets/pizza-svgrepo-com.svg'
 import Cart from '../../assets/basket-fill.svg'
 import { useQuery } from "@tanstack/react-query";
@@ -51,7 +51,7 @@ const CartActionsSection = styled.div`
     justify-content: space-between;
 `;
 
-const CartButton = styled.button<{disabled:boolean}>`
+const CartButton = styled.button<{disabled:boolean; bounce: boolean}>`
     display: flex;
     width: 10rem;
     justify-content: center;
@@ -60,6 +60,7 @@ const CartButton = styled.button<{disabled:boolean}>`
     border: none;
     border-radius: 15px;
     background-color: rgba(0, 0, 0, 0.3);
+    animation: ${({ bounce }) => (bounce ? "bounce 0.5s" : "none")};
 
     &:hover {
         opacity: 0.7;
@@ -69,6 +70,18 @@ const CartButton = styled.button<{disabled:boolean}>`
     @media (max-width: 768px) {
         width: 7rem;
     }
+
+    @keyframes bounce {
+        0%, 20%, 50%, 80%, 100% {
+          transform: translateY(0);
+        }
+        40% {
+          transform: translateY(-10px);
+        }
+        60% {
+          transform: translateY(-5px);
+        }
+      }
 `;
 
 const CartButtonImg = styled.img`
@@ -93,6 +106,8 @@ const CartButtonP = styled.p<CartButtonPProps>`
 
 const Header:React.FC<{onOpenModal: (event:React.MouseEvent) => void}> = (props) => {
 
+    const [ bounce, setBounce ] = useState(false);
+
     const { data, isSuccess, isError, isPending } = useQuery<CartItemInterface[]>({
         queryKey:['cart'],
         queryFn:fetchCart,
@@ -116,6 +131,16 @@ const Header:React.FC<{onOpenModal: (event:React.MouseEvent) => void}> = (props)
             });
         }
       }, [isError]);
+
+      useEffect(() => {
+        setBounce(true);
+    
+        const timeoutId = setTimeout(() => {
+          setBounce(false);
+        }, 500);
+    
+        return () => clearTimeout(timeoutId);
+      }, [totalQuantity]);
 
     if(isPending) {
         content = <Loader size='1rem'/>
@@ -142,7 +167,7 @@ const Header:React.FC<{onOpenModal: (event:React.MouseEvent) => void}> = (props)
                 <LogoP>FastPizza</LogoP>
             </LogoContainer>
             <CartActionsSection>
-                <CartButton disabled={!isSuccess} onClick={props.onOpenModal}>
+                <CartButton disabled={!isSuccess} onClick={props.onOpenModal} bounce={bounce}>
                     <CartButtonImg src={Cart} alt='Cart'/>
                     {content}
                 </CartButton>
